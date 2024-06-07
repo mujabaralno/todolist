@@ -19,12 +19,11 @@ const ToDoList = () => {
       const selectedColor = JenisTask.find(
         (task) => task.id === selectedTask
       ).color;
-      const newTask = { text: inputValue, color: selectedColor };
+      const newTask = { text: inputValue, color: selectedColor, id: Date.now() };
       setTaskList([...taskList, newTask]);
       setInputValue("");
       localStorage.setItem("taskList", JSON.stringify([...taskList, newTask]));
     }
-    
   };
 
   const handleKeyPress = (e) => {
@@ -40,11 +39,10 @@ const ToDoList = () => {
     }
   }, []);
 
-  const handleDelete = (index) => {
-    const newTaskList = [...taskList];
-    newTaskList.splice(index, 1);
-    setTaskList(newTaskList); 
-    localStorage.setItem("taskList", JSON.stringify(newTaskList)); 
+  const handleDelete = (id) => {
+    const newTaskList = taskList.filter((task) => task.id !== id);
+    setTaskList(newTaskList);
+    localStorage.setItem("taskList", JSON.stringify(newTaskList));
   };
 
   const handleClear = () => {
@@ -56,7 +54,7 @@ const ToDoList = () => {
     <section className="w-full">
       <form
         onSubmit={handleSubmit}
-        className="wrapper gradient-color1 rounded-lg shadow-xl flex items-center gap-4"
+        className="wrapper gradient-color1 rounded-lg shadow-xl flex flex-col md:flex-row items-center gap-4"
       >
         <RadioGroup
           className="flex flex-row gap-2"
@@ -97,27 +95,29 @@ const ToDoList = () => {
           </Button>
         </div>
       </form>
-      <div className="wrapper   flex-col items-center gap-4 mt-12">
+      <ul className="wrapper flex flex-col md:items-start w-full justify-center gap-4 mt-12">
         {taskList.map((task) => (
           <div
-            key={task.id} 
-            className="flex flex-row gap-12 gradient-color1 p-2 rounded-xl shadow-lg mt-4 justify-between items-center"
+            key={task.id}
+            className="flex flex-col md:flex-row items-center gap-4 gradient-color1 p-4 min-h-[50px] min-w-[50px] md:w-full rounded-xl shadow-lg mt-4 justify-between"
           >
             <div
               style={{ backgroundColor: task.color }}
-              className="h-5 w-5 rounded-full"
-            ></div>
-            <Label className="p-18-semibold text-white">{task.text} </Label>
-            <div className="flex flex-col gap-4 rounded-xl bg-white p-3 shadow-sm transition-all">
+              className="h-4 w-4 md:h-5 md:w-6 rounded-full"
+            />
+            <li className="p-18-semibold text-white w-full text-center md:text-left md:w-auto h-full">
+              {task.text}
+            </li>
+            <div className="flex gap-4 rounded-xl bg-white p-3 shadow-sm transition-all">
               <DeleteConfirmation onDelete={() => handleDelete(task.id)} />
             </div>
           </div>
         ))}
-      </div>
-      <div className="flex justify-center items-center w-full">
+      </ul>
+      <div className="flex justify-center items-center w-full mt-4">
         <Button
           onClick={handleClear}
-          className="flex-center p-16-semibold whitespace-nowrap bg-purple-gradient rounded-2xl bg-cover transition-all hover:bg-purple-100 hover:shadow-inner bg-white  text-purple-700 w-32"
+          className="flex-center p-16-semibold whitespace-nowrap bg-purple-gradient rounded-2xl bg-cover transition-all hover:bg-purple-100 hover:shadow-inner bg-white text-purple-700 w-32"
         >
           Clear all
         </Button>
