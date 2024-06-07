@@ -105,7 +105,7 @@ const ToDoList = () => {
               style={{ backgroundColor: task.color }}
               className="h-4 w-4 md:h-5 md:w-6 rounded-full"
             />
-            <li className="p-18-semibold text-white w-full text-center md:text-left md:w-auto h-full">
+            <li className="p-18-semibold text-white w-full  md:w-auto h-full">
               {task.text}
             </li>
             <div className="flex gap-4 rounded-xl bg-white p-3 shadow-sm transition-all">
