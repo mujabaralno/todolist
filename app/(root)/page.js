@@ -6,9 +6,6 @@ export default async function Home() {
 
   return (
     <>
-      <div className="wrapper mb-2">
-        <h1 className="h1-semibold text-black">Welcome to TO DO LIST</h1>
-      </div>
       <section className="home">
         <h1 className="home-heading text-white">
           TO DO LIST
